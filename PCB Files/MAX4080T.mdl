@@ -1,0 +1,86 @@
+* MAX4080T MACROMODEL
+* ------------------------------
+* Revision 0, 12/2003
+* ------------------------------
+* MAX4080T is a high-side, current-sense amplifier with an input voltage
+* range that extends from 4.5V to 76V with a gain of 20V/V. It operates
+* from a single 4.5V to 76V and draw only 75uA of supply current.
+* ------------------------------
+* Connections
+*      1  = RS+
+*      2  = VCC
+*      3  = N.C.
+*      4  = GND 
+*      5  = OUT
+*      6  = N.C.
+*      7  = N.C.
+*      8  = RS-
+*********************************
+.SUBCKT MAX4080T 1 2 4 5 8
+*********************
+*INPUT STAGE
+*INPUT OFFSET
+VOFF 99 1 0.1M
+*BIAS AND LEAKAGE CURRENTS
+RL 2 9 3.77G
+Q1 9 99 10 QX
+Q2 9 8 10 QX
+GSS 10 4 2 4 0.132U
+RQ 2 4 1.013MEG
+*ICMR
+RLIMIT 10 13 10
+DICH 13 11 DX
+VICH 11 4 76
+DICL 12 13 DX
+VICL 12 4 4.5
+*********************
+*ZERO AND POLE STAGES
+*PSRR ZERO AND POLE
+GP1 15 21 2 4 0.1
+LP1 21 22 79.567M
+RP1 22 15 10
+GP2 15 23 21 15 1U
+RP2 23 15 1MEG
+CP2 23 15 0.637P
+*COMMON MODE ZERO AND POLE
+GC1 15 18 10 4 0.1
+LC1 18 19 53.045M
+RC1 19 15 10
+GC2 15 20 18 15 1U
+RC2 20 15 1MEG
+CC2 20 15 0.637P
+*DIFFERENTIAL MODE ZERO AND POLE
+ED1 16 15 99 8 1
+RD1 16 17 1.758
+LD1 17 30 1U
+CD1 30 15 0.505U
+********************
+*GAIN STAGES
+GPS 14 15 23 15 3.972P
+GCM 14 15 20 15 3.155P
+GA 15 14 30 15 5U
+RA 14 15 4MEG
+********************
+*REFERENCE
+VREF 15 4 0
+********************
+*OUTPUT LIMITING
+GOUT1 4 24 14 4 1U
+ROUT1 24 4 1MEG
+DOH 24 25 DX
+VOH 25 26 -0.15
+EOH 26 4 2 4 1
+DOL 27 24 DX
+VOL 27 4 5M
+********************
+*OUTPUT
+GOUT 4 5 24 4 10
+ROUT 5 4 0.1
+******************** 
+.MODEL QX NPN(BF=1)
+.MODEL DX D(IS=1E-18 CJO=1E-15 N=0.001)
+********************
+.ENDS
+
+
+* Copyright (c) 2003-2012 Maxim Integrated Products.  All Rights Reserved.

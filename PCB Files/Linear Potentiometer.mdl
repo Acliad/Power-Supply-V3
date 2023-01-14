@@ -1,0 +1,24 @@
+*--------------------- The Linear Potentiometer ---------------------
+*      
+* 1.0 <----- 0.0
+*        |3
+*      __V__
+*  1--|_____|--2
+*        
+*  o--R1-o-R2--o
+*
+.SUBCKT potentiometer 1 2 3
+* Parameters: Rtot, wiper
+.param w=limit(0.01m,wiper,0.99999)
+*
+R1 1 3 {Rtot*(1-w)}
+R2 3 2 {Rtot*(w)}
+.ENDS
+*
+
+.SUBCKT pot_lin 1 2 3
+.param w=limit(0.01m,wiper,0.99999)
+*
+R1 1 3 {Rtot*(1-w)}
+R2 3 2 {Rtot*(w)}
+.ENDS
